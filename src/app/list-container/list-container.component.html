@@ -1,0 +1,6 @@
+@for (listItem of listItems; track listItem) {
+  <app-list-item [data]="listItem"></app-list-item>
+}
+
+<button (click)="addElement()">Add</button>
+<button (click)="changeFirstElement()">Change</button>

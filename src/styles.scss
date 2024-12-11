@@ -1,1 +1,205 @@
-/* You can add global styles to this file, and also import other style files */
+@use "sass:map";
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
+$typography-map: (
+  "title-medium": (
+    "line-height": 24px,
+    "size": 16px,
+    "tracking": 0.15px,
+    "weight": 500
+  ),
+  "body-large": (
+    "line-height": 24px,
+    "size": 16px,
+    "tracking": 0.5px,
+    "weight": 400
+  ),
+  "body-medium": (
+    "line-height": 20px,
+    "size": 14px,
+    "tracking": 0.25px,
+    "weight": 400
+  ),
+);
+
+@mixin _private-apply-font($font-style) {
+  $font-map: map.get($typography-map, $font-style);
+
+  font-size: map.get($font-map, "size");
+  font-weight: map.get($font-map, "weight");
+  letter-spacing: map.get($font-map, "tracking");
+  line-height: map.get($font-map, "line-height");
+}
+
+@mixin typography-title-medium {
+  @include _private-apply-font("title-medium");
+}
+
+@mixin typography-body-large {
+  @include _private-apply-font("body-large");
+}
+
+@mixin typography-body-medium {
+  @include _private-apply-font("body-medium");
+}
+
+/*
+$title-medium-font-map: (
+  "line-height": 24px,
+  "size": 16px,
+  "tracking": 0.15px,
+  "weight": 500
+);
+
+$body-large-font-map: (
+  "line-height": 24px,
+  "size": 16px,
+  "tracking": 0.5px,
+  "weight": 400
+);
+
+$body-medium-font-map: (
+  "line-height": 20px,
+  "size": 14px,
+  "tracking": 0.25px,
+  "weight": 400
+);
+
+@mixin apply-font($font-map) {
+  font-size: map.get($font-map, "size");
+  font-weight: map.get($font-map, "weight");
+  letter-spacing: map.get($font-map, "tracking");
+  line-height: map.get($font-map, "line-height");
+}
+*/
+
+/*
+@mixin apply-font($line-height, $size, $tracking, $weight) {
+  font-size: $size;
+  font-weight: $weight;
+  letter-spacing: $tracking;
+  line-height: $line-height;
+}
+*/
+
+:root {
+  // light theme colors
+  --md-sys-color-background-light: rgb(248 249 255);
+  --md-sys-color-on-background-light: rgb(25 28 32);
+  --md-sys-color-surface-container-light: rgb(236 238 244);
+  --md-sys-color-primary-container-light: rgb(209 228 255);
+  --md-sys-color-on-primary-container-light: rgb(0 29 54);
+  --md-sys-color-on-surface-light: rgb(25 28 32);
+  --md-sys-color-on-surface-variant-light: rgb(67 71 78);
+
+  // dark theme colors
+  --md-sys-color-background-dark: rgb(17 20 24);
+  --md-sys-color-on-background-dark: rgb(225 226 232);
+  --md-sys-color-surface-container-dark: rgb(29 32 36);
+  --md-sys-color-primary-container-dark: rgb(26 73 117);
+  --md-sys-color-on-primary-container-dark: rgb(209 228 255);
+  --md-sys-color-on-surface-dark: rgb(225 226 232);
+  --md-sys-color-on-surface-variant-dark: rgb(195 198 207);
+
+  // theme colors
+  --md-sys-color-background: light-dark(var(--md-sys-color-background-light), var(--md-sys-color-background-dark));
+  --md-sys-color-on-background: light-dark(var(--md-sys-color-on-background-light), var(--md-sys-color-on-background-dark));
+  --md-sys-color-surface-container: light-dark(var(--md-sys-color-surface-container-light), var(--md-sys-color-surface-container-dark));
+  --md-sys-color-primary-container: light-dark(var(--md-sys-color-primary-container-light), var(--md-sys-color-primary-container-dark));
+  --md-sys-color-on-primary-container: light-dark(var(--md-sys-color-on-primary-container-light), var(--md-sys-color-on-primary-container-dark));
+  --md-sys-color-on-surface: light-dark(var(--md-sys-color-on-surface-light), var(--md-sys-color-on-surface-dark));
+  --md-sys-color-on-surface-variant: light-dark(var(--md-sys-color-on-surface-variant-light), var(--md-sys-color-on-surface-variant-dark));
+
+  color-scheme: light dark;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  font-family: "Roboto", sans-serif;
+
+  background-color: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-background);
+}
+
+.list-container {
+  padding-block: 8px;
+  border-radius: 8px;
+  width: 600px;
+  background: lightgreen;
+  display: grid;
+
+  background-color: var(--md-sys-color-surface-container);
+}
+
+.list-item {
+  --_state-layer-display: none;
+
+  display: grid;
+  grid-template-columns: [avatar-start] min-content [avatar-end content-start] 1fr [content-end];
+  grid-template-rows: [avatar-start headline-start] 1fr [headline-end supporting-text-start] 1fr [avatar-end supporting-text-end];
+  box-sizing: border-box;
+  height: 72px;
+  padding-block: 8px;
+  padding-inline: 16px;
+  column-gap: 16px;
+  position: relative;
+  isolation: isolate;
+
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+
+  &:hover {
+    --_state-layer-display: block;
+  }
+
+  &::after {
+    display: var(--_state-layer-display);
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: currentColor;
+    opacity: 0.08;
+    z-index: -1;
+  }
+
+  &__avatar {
+    @include typography-title-medium;
+
+    grid-column: avatar;
+    grid-row: avatar;
+    display: grid;
+    align-self: center;
+    place-items: center;
+    width: 40px;
+    aspect-ratio: 1;
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    border-radius: 20px;
+  }
+
+  &__headline {
+    @include typography-body-large;
+
+    grid-column: content;
+    grid-row: headline;
+    margin: 0;
+    align-self: end;
+  }
+
+  &__supporting-text {
+    @include typography-body-medium;
+
+    grid-column: content;
+    grid-row: supporting-text;
+    margin: 0;
+
+    color: var(--md-sys-color-on-surface-variant);
+  }
+}
