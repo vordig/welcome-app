@@ -1,0 +1,26 @@
+@if (dataSource.isLoading()) {
+  loading...
+}
+
+@for (task of dataSource.$data | async; track task) {
+  <div>{{ task.title }}</div>
+}
+
+<mat-table [dataSource]="dataSource">
+
+  <ng-container matColumnDef="title">
+    <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+    <mat-cell *matCellDef="let task"> {{task.title}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="description">
+    <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+    <mat-cell *matCellDef="let task"> {{task.description}} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+<input matInput type="text" [(ngModel)]="searchTerm">
+<button mat-button (click)="search()">Search</button>
