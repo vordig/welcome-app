@@ -1,0 +1,22 @@
+﻿name: cm25-frontend-course
+
+services:
+  nginx:
+    image: nginx:1.27-alpine
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates
+      - ../dist/welcome-app/browser:/usr/share/nginx/html
+    container_name: nginx
+    networks:
+      - cm25
+    ports:
+      - "10500:80"
+  backend:
+    image: vordi/cm25-server:0.0.1
+    container_name: backend
+    networks:
+      - cm25
+
+networks:
+  cm25:
+    name: cm25

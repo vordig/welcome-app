@@ -2,7 +2,7 @@
   loading...
 }
 
-@for (task of dataSource.$data | async; track task) {
+@for (task of dataSource.connect() | async; track task) {
   <div>{{ task.title }}</div>
 }
 
