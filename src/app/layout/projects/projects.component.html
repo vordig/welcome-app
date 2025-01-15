@@ -1,22 +1,15 @@
-<button mat-button (click)="createProject()">Create Project</button>
+<div class="cta-container">
+  <button mat-button (click)="createProject()">Create Project</button>
+</div>
 
-<mat-table [dataSource]="dataSource">
+<div class="projects-container">
+  <mat-nav-list>
+    @for (project of dataSource.$data | async; track project.id) {
+      <a mat-list-item routerLink="{{ project.id }}" routerLinkActive="active">{{ project.name }}</a>
+    }
+  </mat-nav-list>
+</div>
 
-  <ng-container matColumnDef="id">
-    <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
-    <mat-cell *matCellDef="let project"> {{project.id}} </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="code">
-    <mat-header-cell *matHeaderCellDef> Code </mat-header-cell>
-    <mat-cell *matCellDef="let project"> {{project.code}} </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-    <mat-cell *matCellDef="let project"> {{project.name}} </mat-cell>
-  </ng-container>
-
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
+<div class="issues-container">
+  <router-outlet/>
+</div>

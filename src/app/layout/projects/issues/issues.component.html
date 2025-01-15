@@ -1,0 +1,3 @@
+@for (issue of dataSource.$data | async; track issue.id) {
+  <div>{{ issue.name }} - {{ issue.description }}</div>
+}

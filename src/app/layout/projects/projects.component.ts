@@ -6,14 +6,24 @@ import {ProjectService} from '../../services/project.service';
 import {IProjectRequest} from '../../interfaces/requests/project-request.interface';
 import {MatDialog} from '@angular/material/dialog';
 import {CreateProjectComponent} from './dialogs/create-project/create-project.component';
+import {RouterModule, RouterOutlet} from '@angular/router';
+import {AsyncPipe} from '@angular/common';
+import {MatListModule} from '@angular/material/list';
 
 @Component({
   selector: 'app-projects',
   imports: [
     MatTableModule,
-    MatButton
+    MatButton,
+    RouterOutlet,
+    AsyncPipe,
+    MatListModule,
+    RouterModule
   ],
-  templateUrl: './projects.component.html'
+  templateUrl: './projects.component.html',
+  host: {
+    class: 'app-projects'
+  }
 })
 export class ProjectsComponent {
 

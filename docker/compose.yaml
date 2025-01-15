@@ -12,7 +12,7 @@ services:
     ports:
       - "10500:80"
   backend:
-    image: vordi/cm25-server:0.0.1
+    image: vordi/cm25-server:0.0.2
     container_name: backend
     networks:
       - cm25

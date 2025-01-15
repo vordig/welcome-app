@@ -1,7 +1,9 @@
-<!--<app-list-container></app-list-container>-->
+<nav>
+  <h1>Our welcome app</h1>
+  <a mat-button routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Projects</a>
+  <a mat-button routerLink="tasks" routerLinkActive="active">Tasks</a>
+</nav>
 
-<!--<app-tasks></app-tasks>-->
-
-<app-projects></app-projects>
-
-<router-outlet />
+<main>
+  <router-outlet />
+</main>
