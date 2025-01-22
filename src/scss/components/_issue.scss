@@ -10,10 +10,10 @@
   $priority-marker-width: 8px;
 
   .issue {
-    --_marker-color-minor: light-dark(hsl(203deg 100% 22.75%), hsl(203deg 84.82% 56.08%));
-    --_marker-color-normal: light-dark(hsl(109deg 100% 22.75%), hsl(109deg 84.82% 56.08%));
-    --_marker-color-major: light-dark(hsl(42deg 100% 22.75%), hsl(42deg 84.82% 56.08%));
-    --_marker-color-critical: light-dark(hsl(0deg 100% 22.75%), hsl(0deg 84.82% 56.08%));
+    --_marker-color-minor: light-dark(#47673B, #ACD19B);
+    --_marker-color-normal: light-dark(#1C619C, #9ECAFF);
+    --_marker-color-major: light-dark(#904D00, #FFB77D);
+    --_marker-color-critical: light-dark(#904A46, #FFB3AE);
 
     display: grid;
     position: relative;
