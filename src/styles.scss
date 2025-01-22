@@ -1,5 +1,6 @@
 @use '@angular/material' as mat;
 @use 'scss/theme-colors' as test-theme;
+@use 'scss/components' as components;
 
 html {
   @include mat.theme((
@@ -13,8 +14,9 @@ html {
   ));
 
   @include mat.theme-overrides((
-
   ));
+
+  @include components.all();
 }
 
 :root {
@@ -30,8 +32,8 @@ body {
   display: grid;
   font-family: "Roboto", sans-serif;
 
-  background-color: var(--md-sys-color-background);
-  color: var(--md-sys-color-on-background);
+  background-color: var(--mat-sys-surface-container-highest);
+  color: var(--md-sys-color-on-surface);
 }
 
 .app-root {

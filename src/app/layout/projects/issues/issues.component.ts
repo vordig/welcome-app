@@ -1,13 +1,18 @@
 import {Component, Input} from '@angular/core';
 import {IssueDataSource} from '../../../data-sources/issue.data-source';
 import {AsyncPipe} from '@angular/common';
+import {IssueComponent} from '../../../components/issue/issue.component';
 
 @Component({
   selector: 'app-issues',
   imports: [
-    AsyncPipe
+    AsyncPipe,
+    IssueComponent
   ],
-  templateUrl: './issues.component.html'
+  templateUrl: './issues.component.html',
+  host: {
+    'class': 'issue-list'
+  }
 })
 export class IssuesComponent {
 

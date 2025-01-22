@@ -1,0 +1,114 @@
+﻿@mixin _private-apply-font($type-scale) {
+  font-size: var(--mat-sys-#{$type-scale}-size);
+  font-weight: var(--mat-sys-#{$type-scale}-weight);
+  letter-spacing: var(--mat-sys-#{$type-scale}-tracking);
+  line-height: var(--mat-sys-#{$type-scale}-line-height);
+}
+
+@mixin component() {
+  $padding: 16px;
+  $priority-marker-width: 8px;
+
+  .issue {
+    --_marker-color-minor: light-dark(hsl(203deg 100% 22.75%), hsl(203deg 84.82% 56.08%));
+    --_marker-color-normal: light-dark(hsl(109deg 100% 22.75%), hsl(109deg 84.82% 56.08%));
+    --_marker-color-major: light-dark(hsl(42deg 100% 22.75%), hsl(42deg 84.82% 56.08%));
+    --_marker-color-critical: light-dark(hsl(0deg 100% 22.75%), hsl(0deg 84.82% 56.08%));
+
+    display: grid;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+
+    grid: {
+      template: {
+        columns: min-content 1fr;
+        rows: min-content min-content;
+        areas: "code name" "description description";
+      }
+      column-gap: 8px;
+      row-gap: 8px;
+    }
+
+    padding: {
+      top: $padding;
+      bottom: $padding;
+      left: $padding + $priority-marker-width;
+      right: $padding;
+    }
+
+    border: {
+      width: 1px;
+      style: solid;
+      radius: var(--mat-sys-corner-medium);
+      color: var(--mat-sys-surface-variant);
+    }
+
+    background-color: var(--mat-sys-surface);
+    color: var(--mat-sys-on-surface);
+
+    &:hover {
+      --_state-layer-opacity: var(--mat-sys-hover-state-layer-opacity);
+    }
+
+    &--minor {
+      --_marker-color: var(--_marker-color-minor);
+    }
+
+    &--normal {
+      --_marker-color: var(--_marker-color-normal);
+    }
+
+    &--major {
+      --_marker-color: var(--_marker-color-major);
+    }
+
+    &--critical {
+      --_marker-color: var(--_marker-color-critical);
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset-block: 0;
+      left: 0;
+      width: $priority-marker-width;
+
+      background-color: var(--_marker-color, transparent);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-color: currentColor;
+
+      opacity: var(--_state-layer-opacity, 0);
+    }
+
+    &__code {
+      grid-area: code;
+      white-space: nowrap;
+
+      @include _private-apply-font(title-medium);
+    }
+
+    &__name {
+      grid-area: name;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      @include _private-apply-font(body-large);
+    }
+
+    &__description {
+      grid-area: description;
+
+      color: var(--mat-sys-on-surface-variant);
+
+      @include _private-apply-font(body-medium);
+    }
+  }
+}
