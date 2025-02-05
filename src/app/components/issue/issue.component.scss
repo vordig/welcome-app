@@ -1,0 +1,78 @@
+﻿$_padding: 16px;
+$_priority-marker-width: 8px;
+
+:host {
+    display: grid;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+
+    grid: {
+        template: {
+            columns: min-content 1fr;
+            rows: min-content min-content;
+            areas: "code name" "description description";
+        }
+        column-gap: 8px;
+        row-gap: 8px;
+    }
+
+    padding: {
+        top: $_padding;
+        bottom: $_padding;
+        left: $_padding + $_priority-marker-width;
+        right: $_padding;
+    }
+
+    border: {
+        width: 1px;
+        style: solid;
+        radius: var(--mat-sys-corner-medium);
+        color: var(--mat-sys-surface-variant);
+    }
+
+    background-color: var(--mat-sys-surface);
+    color: var(--mat-sys-on-surface);
+
+    &:hover {
+        --_state-layer-opacity: var(--mat-sys-hover-state-layer-opacity);
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset-block: 0;
+        left: 0;
+        width: $_priority-marker-width;
+
+        background-color: var(--app-issue-marker-color, transparent);
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background-color: currentColor;
+
+        opacity: var(--_state-layer-opacity, 0);
+    }
+
+    .app-issue__code {
+        grid-area: code;
+        white-space: nowrap;
+    }
+
+    .app-issue__name {
+        grid-area: name;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .app-issue__description {
+        grid-area: description;
+
+        color: var(--mat-sys-on-surface-variant);
+    }
+}

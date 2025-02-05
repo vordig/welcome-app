@@ -1,7 +1,7 @@
 ﻿@use "./issue";
 @use "./issue-list";
 
-@mixin all() {
-  @include issue.component();
+@mixin all($component-prefix) {
+  @include issue.component($component-prefix);
   @include issue-list.component();
 }

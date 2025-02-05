@@ -1,114 +1,47 @@
 ﻿@mixin _private-apply-font($type-scale) {
-  font-size: var(--mat-sys-#{$type-scale}-size);
-  font-weight: var(--mat-sys-#{$type-scale}-weight);
-  letter-spacing: var(--mat-sys-#{$type-scale}-tracking);
-  line-height: var(--mat-sys-#{$type-scale}-line-height);
+    font-size: var(--mat-sys-#{$type-scale}-size);
+    font-weight: var(--mat-sys-#{$type-scale}-weight);
+    letter-spacing: var(--mat-sys-#{$type-scale}-tracking);
+    line-height: var(--mat-sys-#{$type-scale}-line-height);
 }
 
-@mixin component() {
-  $padding: 16px;
-  $priority-marker-width: 8px;
-
-  .issue {
-    --_marker-color-minor: light-dark(#47673B, #ACD19B);
-    --_marker-color-normal: light-dark(#1C619C, #9ECAFF);
-    --_marker-color-major: light-dark(#904D00, #FFB77D);
-    --_marker-color-critical: light-dark(#904A46, #FFB3AE);
-
-    display: grid;
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-
-    grid: {
-      template: {
-        columns: min-content 1fr;
-        rows: min-content min-content;
-        areas: "code name" "description description";
-      }
-      column-gap: 8px;
-      row-gap: 8px;
+@mixin _set-token($prefix, $component, $token, $value) {
+    & {
+        --#{$prefix}-#{$component}-#{$token}: #{$value};
     }
+}
 
-    padding: {
-      top: $padding;
-      bottom: $padding;
-      left: $padding + $priority-marker-width;
-      right: $padding;
+@mixin component($component-prefix) {
+    $component-name: 'issue';
+    $marker-variants: (
+        "minor": var(--_marker-color-minor),
+        "normal": var(--_marker-color-normal),
+        "major": var(--_marker-color-major),
+        "critical": var(--_marker-color-critical)
+    );
+
+    .#{$component-prefix}-#{$component-name} {
+        --_marker-color-minor: light-dark(#47673B, #ACD19B);
+        --_marker-color-normal: light-dark(#1C619C, #9ECAFF);
+        --_marker-color-major: light-dark(#904D00, #FFB77D);
+        --_marker-color-critical: light-dark(#904A46, #FFB3AE);
+
+        @each $variant, $color in $marker-variants {
+            &--#{$variant} {
+                @include _set-token($component-prefix, $component-name, 'marker-color', $color);
+            }
+        }
+
+        &__code {
+            @include _private-apply-font(title-medium);
+        }
+
+        &__name {
+            @include _private-apply-font(body-large);
+        }
+
+        &__description {
+            @include _private-apply-font(body-medium);
+        }
     }
-
-    border: {
-      width: 1px;
-      style: solid;
-      radius: var(--mat-sys-corner-medium);
-      color: var(--mat-sys-surface-variant);
-    }
-
-    background-color: var(--mat-sys-surface);
-    color: var(--mat-sys-on-surface);
-
-    &:hover {
-      --_state-layer-opacity: var(--mat-sys-hover-state-layer-opacity);
-    }
-
-    &--minor {
-      --_marker-color: var(--_marker-color-minor);
-    }
-
-    &--normal {
-      --_marker-color: var(--_marker-color-normal);
-    }
-
-    &--major {
-      --_marker-color: var(--_marker-color-major);
-    }
-
-    &--critical {
-      --_marker-color: var(--_marker-color-critical);
-    }
-
-    &::before {
-      content: '';
-      position: absolute;
-      inset-block: 0;
-      left: 0;
-      width: $priority-marker-width;
-
-      background-color: var(--_marker-color, transparent);
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      background-color: currentColor;
-
-      opacity: var(--_state-layer-opacity, 0);
-    }
-
-    &__code {
-      grid-area: code;
-      white-space: nowrap;
-
-      @include _private-apply-font(title-medium);
-    }
-
-    &__name {
-      grid-area: name;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-
-      @include _private-apply-font(body-large);
-    }
-
-    &__description {
-      grid-area: description;
-
-      color: var(--mat-sys-on-surface-variant);
-
-      @include _private-apply-font(body-medium);
-    }
-  }
 }

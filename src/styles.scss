@@ -3,86 +3,90 @@
 @use 'scss/components' as components;
 
 html {
-  @include mat.theme((
-    color: (
-      theme-type: color-scheme,
-      primary: test-theme.$primary-palette,
-      tertiary: test-theme.$tertiary-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+    @include mat.theme((
+        color: (
+            theme-type: color-scheme,
+            primary: test-theme.$primary-palette,
+            tertiary: test-theme.$tertiary-palette,
+        ),
+        typography: Roboto,
+        density: 0,
+    ));
 
-  @include mat.theme-overrides((
-  ));
+    @include mat.theme-overrides((
+    ));
 
-  @include components.all();
+    @include mat.card-overrides((
+
+    ));
+
+    @include components.all('app');
 }
 
 :root {
-  color-scheme: light dark;
+    color-scheme: light dark;
 }
 
 html, body {
-  margin: 0;
-  height: 100%;
+    margin: 0;
+    height: 100%;
 }
 
 body {
-  display: grid;
-  font-family: "Roboto", sans-serif;
+    display: grid;
+    font-family: "Roboto", sans-serif;
 
-  background-color: var(--mat-sys-surface-container-highest);
-  color: var(--md-sys-color-on-surface);
+    background-color: var(--mat-sys-surface-container-highest);
+    color: var(--md-sys-color-on-surface);
 }
 
 .app-root {
-  display: grid;
-  grid-template-rows: min-content 1fr;
-  grid-template-areas: "nav" "main";
-  column-gap: 16px;
-  row-gap: 24px;
-  margin-block: 24px;
-  margin-inline: 32px;
-
-  nav {
-    grid-area: nav;
-
     display: grid;
-    grid-template-columns: 1fr;
-    grid-auto-flow: column;
-    grid-auto-columns: min-content;
-    column-gap: inherit;
-    align-items: center;
-  }
+    grid-template-rows: min-content 1fr;
+    grid-template-areas: "nav" "main";
+    column-gap: 16px;
+    row-gap: 24px;
+    margin-block: 24px;
+    margin-inline: 32px;
 
-  main {
-    grid-area: main;
+    nav {
+        grid-area: nav;
 
-    display: grid;
-
-    & > * {
-      grid-column: 1 / -1;
-      grid-row: 1 / -1;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-auto-flow: column;
+        grid-auto-columns: min-content;
+        column-gap: inherit;
+        align-items: center;
     }
-  }
+
+    main {
+        grid-area: main;
+
+        display: grid;
+
+        & > * {
+            grid-column: 1 / -1;
+            grid-row: 1 / -1;
+        }
+    }
 }
 
 .app-projects {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  grid-template-rows: min-content 1fr;
-  grid-template-areas: "cta issues" "projects issues";
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: min-content 1fr;
+    grid-template-areas: "cta issues" "projects issues";
 
-  .cta-container {
-    grid-area: cta;
-  }
+    .cta-container {
+        grid-area: cta;
+    }
 
-  .projects-container {
-    grid-area: projects;
-  }
+    .projects-container {
+        grid-area: projects;
+    }
 
-  .issues-container {
-    grid-area: issues;
-  }
+    .issues-container {
+        grid-area: issues;
+    }
 }
