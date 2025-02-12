@@ -1,12 +1,9 @@
-<!--@for (issue of dataSource.$data | async; track issue.id) {-->
-<!--  <app-issue [issue]="issue"></app-issue>-->
-<!--}-->
+<!--<button mat-button (click)="issuesResource.reload()">Reload</button>-->
 
-<div>Status: {{firstStatus()}}</div>
-<div>Count: {{issuesCount()}}</div>
-
-<button mat-button (click)="issuesResource.reload()">Reload</button>
-
-@for (issue of issues(); track issue.id) {
-    <app-issue [issue]="issue"></app-issue>
+@if (!issueDataSource.isLoading()) {
+    @for (issue of issueDataSource.issues(); track issue.id) {
+        <app-issue [issue]="issue"></app-issue>
+    }
+} @else {
+    <mat-spinner></mat-spinner>
 }

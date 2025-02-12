@@ -1,25 +1,30 @@
-﻿import {effect, inject, signal} from '@angular/core';
-import {Observable} from 'rxjs';
-import {IIssue} from '../interfaces/issue.interface';
+﻿import {computed, inject, Signal} from '@angular/core';
 import {IssueService} from '../services/issue.service';
-import {BaseDataSource} from './base.data-source';
+import {rxResource} from '@angular/core/rxjs-interop';
+import {IIssue} from '../interfaces/issue.interface';
 
-export class IssueDataSource extends BaseDataSource<IIssue> {
+export class IssueDataSource {
 
-  private readonly _issueService = inject(IssueService);
+    private readonly _issueService = inject(IssueService);
 
-  public readonly projectId = signal<string>('');
+    private readonly _projectId: Signal<string>;
 
-  constructor() {
-    super(false);
-
-    effect(() => {
-      if(!this.projectId) return;
-      this.isInit.set(true);
+    private readonly _issuesResource = rxResource({
+        request: () => ({
+            projectId: this._projectId()
+        }),
+        loader: ({request}) => this._issueService.getIssues(request.projectId)
     });
-  }
 
-  protected override getData(): Observable<IIssue[]> {
-    return this._issueService.getIssues(this.projectId());
-  }
+    public readonly issues = computed<IIssue[]>(() => {
+        return this._issuesResource.value() ?? [];
+    });
+
+    public readonly isLoading = computed<boolean>(() => {
+        return this._issuesResource.isLoading();
+    });
+
+    constructor(projectId: Signal<string>) {
+        this._projectId = projectId;
+    }
 }

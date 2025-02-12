@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {ProjectDataSource} from '../../data-sources/project.data-source';
 import {MatTableModule} from '@angular/material/table';
-import {MatButton} from '@angular/material/button';
+import {MatAnchor, MatButton} from '@angular/material/button';
 import {ProjectService} from '../../services/project.service';
 import {IProjectRequest} from '../../interfaces/requests/project-request.interface';
 import {MatDialog} from '@angular/material/dialog';
@@ -12,14 +12,14 @@ import {MatListModule} from '@angular/material/list';
 
 @Component({
   selector: 'app-projects',
-  imports: [
-    MatTableModule,
-    MatButton,
-    RouterOutlet,
-    AsyncPipe,
-    MatListModule,
-    RouterModule
-  ],
+    imports: [
+        MatTableModule,
+        RouterOutlet,
+        AsyncPipe,
+        MatListModule,
+        RouterModule,
+        MatAnchor
+    ],
   templateUrl: './projects.component.html',
   host: {
     class: 'app-projects'
