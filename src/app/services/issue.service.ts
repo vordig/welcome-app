@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {IIssue} from '../interfaces/issue.interface';
 import {IIssueRequest} from '../interfaces/requests/issue-request.interface';
 
@@ -13,6 +13,7 @@ export class IssueService {
     private readonly _apiPath = '/api/v1.0/issues';
 
     public getIssues(projectId: string): Observable<IIssue[]> {
+        of([]);
         return this._http.get<IIssue[]>(`${this._apiPath}/${projectId}`);
     }
 

@@ -3,7 +3,7 @@ import {effect, inject, Injector, signal} from '@angular/core';
 import {Observable} from 'rxjs';
 import {toObservable} from '@angular/core/rxjs-interop';
 
-export abstract class BaseDataSource<TDataType> extends DataSource<TDataType> {
+export abstract class BaseDataSource<TDataType> {
 
   private readonly _injector = inject(Injector);
 
@@ -14,7 +14,6 @@ export abstract class BaseDataSource<TDataType> extends DataSource<TDataType> {
   public readonly isLoading = signal<boolean>(false);
 
   constructor(isReady: boolean = true) {
-    super();
 
     this.isInit.set(isReady);
 
