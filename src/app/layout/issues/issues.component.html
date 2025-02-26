@@ -1,0 +1,10 @@
+<button mat-button (click)="changeState('Open')">Open</button>
+<button mat-button (click)="changeState('Closed')">Closed</button>
+
+@if (!dataSource.isLoading()) {
+    @for (issue of dataSource.data(); track issue.id) {
+        <app-issue [issue]="issue"></app-issue>
+    }
+} @else {
+    <mat-spinner></mat-spinner>
+}

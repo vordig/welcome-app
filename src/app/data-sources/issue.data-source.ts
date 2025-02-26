@@ -1,30 +1,32 @@
-﻿import {computed, inject, Signal} from '@angular/core';
+﻿import {inject, ResourceRef} from '@angular/core';
 import {IssueService} from '../services/issue.service';
 import {rxResource} from '@angular/core/rxjs-interop';
-import {IIssue} from '../interfaces/issue.interface';
+import {BaseDataSource} from './base.data-source';
+import {IIssueListResponse} from '../interfaces/responses/project/issue-list-response';
+import {IIssueFilterRequest} from '../interfaces/requests/project/issue-filter-request';
+import {IPageResponse} from '../interfaces/responses/page-response';
 
-export class IssueDataSource {
+export class IssueDataSource extends BaseDataSource<IIssueListResponse, IIssueFilterRequest> {
 
     private readonly _issueService = inject(IssueService);
 
-    private readonly _projectId: Signal<string>;
-
     private readonly _issuesResource = rxResource({
         request: () => ({
-            projectId: this._projectId()
+            pageRequest: this.pageRequest(),
+            sortRequest: this.sortRequest(),
+            filterRequest: this.filterRequest(),
         }),
-        loader: ({request}) => this._issueService.getIssues(request.projectId)
+        loader: ({request}) =>
+            this._issueService.getIssues(request.pageRequest, request.sortRequest, request.filterRequest)
     });
 
-    public readonly issues = computed<IIssue[]>(() => {
-        return this._issuesResource.value() ?? [];
-    });
+    protected override dataResource(): ResourceRef<IPageResponse<IIssueListResponse>> {
+        return this._issuesResource;
+    }
 
-    public readonly isLoading = computed<boolean>(() => {
-        return this._issuesResource.isLoading();
-    });
-
-    constructor(projectId: Signal<string>) {
-        this._projectId = projectId;
+    protected override defaultFilterRequest(): IIssueFilterRequest {
+        return {
+            state: "Open"
+        };
     }
 }

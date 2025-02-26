@@ -1,0 +1,10 @@
+<mat-toolbar>
+    <span>CMIssues</span>
+    <span class="filler"></span>
+    <span>{{ authService.authData()?.name }}</span>
+    <button mat-button (click)="authService.signOut()">Sign Out</button>
+</mat-toolbar>
+
+<main>
+    <router-outlet/>
+</main>

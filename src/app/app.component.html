@@ -1,13 +1,1 @@
-<nav>
-
-    @if (authService.isAuthorized()) {
-        <h1>{{ authService.authData()?.name }}</h1>
-    }
-
-    <a mat-button routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Projects</a>
-    <a mat-button routerLink="tasks" routerLinkActive="active">Tasks</a>
-</nav>
-
-<main>
-    <router-outlet/>
-</main>
+<router-outlet/>

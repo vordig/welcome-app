@@ -1,6 +1,7 @@
 import {Component, HostBinding, input} from '@angular/core';
 import {IIssue} from '../../interfaces/issue.interface';
 import {IssuePriority} from '../../enums/issue-priority.enum';
+import {IIssueListResponse} from '../../interfaces/responses/project/issue-list-response';
 
 @Component({
     selector: 'app-issue',
@@ -13,17 +14,17 @@ import {IssuePriority} from '../../enums/issue-priority.enum';
 })
 export class IssueComponent {
 
-    public readonly issue = input.required<IIssue>();
+    public readonly issue = input.required<IIssueListResponse>();
 
     @HostBinding('class') get class() {
         switch (this.issue().priority) {
-            case IssuePriority.Minor:
+            case "Minor":
                 return 'app-issue--minor';
-            case IssuePriority.Normal:
+            case "Normal":
                 return 'app-issue--normal';
-            case IssuePriority.Major:
+            case "Major":
                 return 'app-issue--major';
-            case IssuePriority.Critical:
+            case "Critical":
                 return 'app-issue--critical';
             default:
                 return '';

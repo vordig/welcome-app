@@ -5,8 +5,6 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {MatButton} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {AuthService} from '../../../services/auth.service';
-import {map} from 'rxjs';
-import {IAuthResponse} from '../../../interfaces/responses/auth/auth-response';
 
 @Component({
   selector: 'app-login',
@@ -45,9 +43,9 @@ export class LoginComponent {
     public login() {
         if (this.isInvalidState()) return;
 
-        this._authService.login(this.loginForm.value).subscribe({
-            next: result => {
-                this._authService.updateAuthData(result.accessToken);
+        this._authService.signIn(this.loginForm.value).subscribe({
+            error: error => {
+                console.log(error);
             }
         });
     }

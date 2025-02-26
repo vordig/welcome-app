@@ -28,6 +28,6 @@ export class IssuesComponent {
 
     public readonly projectId = input.required<string>();
 
-    public readonly issueDataSource = new IssueDataSource(this.projectId)
+    // public readonly issueDataSource = new IssueDataSource(this.projectId)
 
 }
