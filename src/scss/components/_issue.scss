@@ -14,33 +14,46 @@
 @mixin component($component-prefix) {
     $component-name: 'issue';
     $marker-variants: (
-        "minor": var(--_marker-color-minor),
-        "normal": var(--_marker-color-normal),
-        "major": var(--_marker-color-major),
-        "critical": var(--_marker-color-critical)
+        "minor": (
+            "letter": '"M"',
+            "background-color": var(--mat-sys-surface-variant),
+            "color": var(--mat-sys-on-surface-variant),
+        ),
+        "normal": (
+            "letter": '"N"',
+            "background-color": var(--mat-sys-secondary-container),
+            "color": var(--mat-sys-on-secondary-container),
+        ),
+        "major": (
+            "letter": '"M"',
+            "background-color": var(--mat-sys-tertiary-container),
+            "color": var(--mat-sys-on-tertiary-container),
+        ),
+        "critical": (
+            "letter": '"C"',
+            "background-color": var(--mat-sys-error-container),
+            "color": var(--mat-sys-on-error-container),
+        )
     );
 
     .#{$component-prefix}-#{$component-name} {
-        --_marker-color-minor: light-dark(#47673B, #ACD19B);
-        --_marker-color-normal: light-dark(#1C619C, #9ECAFF);
-        --_marker-color-major: light-dark(#904D00, #FFB77D);
-        --_marker-color-critical: light-dark(#904A46, #FFB3AE);
-
-        @each $variant, $color in $marker-variants {
+        @each $variant, $color-map in $marker-variants {
             &--#{$variant} {
-                @include _set-token($component-prefix, $component-name, 'marker-color', $color);
+                @each $property, $color in $color-map {
+                    @include _set-token($component-prefix, $component-name, 'marker-#{$property}', $color);
+                }
             }
         }
 
-        &__code {
-            @include _private-apply-font(title-medium);
+        &__project-code {
+            @include _private-apply-font(title-small);
         }
 
         &__name {
             @include _private-apply-font(body-large);
         }
 
-        &__description {
+        &__created-on {
             @include _private-apply-font(body-medium);
         }
     }

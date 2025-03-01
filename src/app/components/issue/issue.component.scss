@@ -1,51 +1,25 @@
-﻿$_padding: 16px;
-$_priority-marker-width: 8px;
-
-:host {
+﻿:host {
     display: grid;
     position: relative;
     overflow: hidden;
     isolation: isolate;
+    cursor: pointer;
 
     grid: {
         template: {
-            columns: min-content 1fr;
+            columns: min-content 1fr min-content;
             rows: min-content min-content;
-            areas: "code name" "description description";
+            areas: "project-code name priority" "project-code created-on priority";
         }
-        column-gap: 8px;
-        row-gap: 8px;
+        column-gap: 16px;
     }
 
-    padding: {
-        top: $_padding;
-        bottom: $_padding;
-        left: $_padding + $_priority-marker-width;
-        right: $_padding;
-    }
+    padding: 8px 16px;
 
-    border: {
-        width: 1px;
-        style: solid;
-        radius: var(--mat-sys-corner-medium);
-        color: var(--mat-sys-surface-variant);
-    }
-
-    background-color: var(--mat-sys-surface);
     color: var(--mat-sys-on-surface);
 
     &:hover {
         --_state-layer-opacity: var(--mat-sys-hover-state-layer-opacity);
-    }
-
-    &::before {
-        content: '';
-        position: absolute;
-        inset-block: 0;
-        left: 0;
-        width: $_priority-marker-width;
-
-        background-color: var(--app-issue-marker-color, transparent);
     }
 
     &::after {
@@ -58,9 +32,30 @@ $_priority-marker-width: 8px;
         opacity: var(--_state-layer-opacity, 0);
     }
 
-    .app-issue__code {
-        grid-area: code;
+    .app-issue__project-code {
+        grid-area: project-code;
         white-space: nowrap;
+        position: relative;
+        box-sizing: border-box;
+        place-self: center;
+        overflow: hidden;
+
+        width: 40px;
+        height: 40px;
+        padding: 4px;
+
+        border-radius: var(--mat-sys-corner-small);
+        background-color: var(--mat-sys-primary-container);
+        color: var(--mat-sys-on-primary-container);
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset-inline: 0;
+            bottom: 0;
+            height: 4px;
+            background-color: var(--mat-sys-primary);
+        }
     }
 
     .app-issue__name {
@@ -70,9 +65,27 @@ $_priority-marker-width: 8px;
         text-overflow: ellipsis;
     }
 
-    .app-issue__description {
-        grid-area: description;
+    .app-issue__created-on {
+        grid-area: created-on;
 
         color: var(--mat-sys-on-surface-variant);
+    }
+
+    .app-issue__priority {
+        grid-area: priority;
+        display: grid;
+        place-items: center;
+        place-self: center;
+
+        width: 32px;
+        height: 32px;
+        border-radius: 4px;
+
+        background-color: var(--app-issue-marker-background-color);
+        color: var(--app-issue-marker-color);
+
+        &::after {
+            content: var(--app-issue-marker-letter);
+        }
     }
 }

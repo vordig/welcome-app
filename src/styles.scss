@@ -16,8 +16,16 @@ html {
     @include mat.theme-overrides((
     ));
 
-    @include mat.card-overrides((
+    @include mat.toolbar-overrides((
+        container-background-color: var(--mat-sys-surface-container-highest)
+    ));
 
+    @include mat.button-overrides((
+        container-shape: var(--mat-sys-corner-small)
+    ));
+
+    @include mat.menu-overrides((
+        item-with-icon-trailing-spacing: 24px
     ));
 
     @include components.all('app');

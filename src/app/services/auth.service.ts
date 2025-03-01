@@ -7,6 +7,7 @@ import {IAuthData} from '../interfaces/auth-data';
 import {Router} from '@angular/router';
 import dayjs, {Dayjs} from 'dayjs';
 import {IRefreshRequest} from '../interfaces/requests/auth/refresh.request';
+import {ISignUpRequest} from '../interfaces/requests/auth/sign-up-request.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -65,6 +66,17 @@ export class AuthService {
 
     public signIn(request: ILoginRequest): Observable<void> {
         return this._http.post<IAuthResponse>(`${this._apiPath}/sign-in`, JSON.stringify(request)).pipe(
+            map(authResponse => {
+                this._accessToken.set(authResponse.accessToken);
+                this._refreshToken.set(authResponse.refreshToken);
+                this._router.navigate(['/']).then(() => {
+                });
+            }),
+        );
+    }
+
+    public signUp(request: ISignUpRequest): Observable<void> {
+        return this._http.post<IAuthResponse>(`${this._apiPath}/sign-up`, JSON.stringify(request)).pipe(
             map(authResponse => {
                 this._accessToken.set(authResponse.accessToken);
                 this._refreshToken.set(authResponse.refreshToken);

@@ -1,4 +1,5 @@
 ﻿import {IssuePriority, IssueState} from '../../../types/issue.types';
+import {Dayjs} from 'dayjs';
 
 export interface IIssueListResponse {
     id: string;
@@ -7,6 +8,6 @@ export interface IIssueListResponse {
     name: string;
     priority: IssuePriority;
     state: IssueState;
-    createdOn: Date;
-    modifiedOn: Date;
+    createdOn: Dayjs;
+    modifiedOn: Dayjs;
 }
