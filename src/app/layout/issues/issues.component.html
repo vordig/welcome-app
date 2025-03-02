@@ -20,7 +20,8 @@
             <mat-chip-option value="Closed">Closed</mat-chip-option>
         </mat-chip-listbox>
 
-        <app-projects-selection></app-projects-selection>
+        <app-projects-selection (change)="selectedProjectIds.set($event)"></app-projects-selection>
+        <app-priorities-selection  (change)="selectedPriorities.set($event)"></app-priorities-selection>
     </div>
 
     <div class="content">

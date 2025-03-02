@@ -4,7 +4,7 @@ import {IssueComponent} from '../../components/issue/issue.component';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {debounceTime} from 'rxjs';
-import {IssueState} from '../../types/issue.types';
+import {IssuePriority, IssueState} from '../../types/issue.types';
 import {IIssueFilterRequest} from '../../interfaces/requests/project/issue-filter-request';
 import {MatButton, MatButtonModule} from '@angular/material/button';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
@@ -16,6 +16,7 @@ import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput, MatInputModule} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
 import {RouterLink} from '@angular/router';
+import {PrioritiesSelectionComponent} from '../../components/priority-selection/priorities-selection.component';
 
 @Component({
     selector: 'app-issues',
@@ -31,7 +32,8 @@ import {RouterLink} from '@angular/router';
         ReactiveFormsModule,
         MatInputModule,
         MatIcon,
-        RouterLink
+        RouterLink,
+        PrioritiesSelectionComponent
     ],
     templateUrl: './issues.component.html',
     styleUrl: './issues.component.scss'
@@ -42,12 +44,16 @@ export class IssuesComponent {
 
     public readonly searchControl = new FormControl<string>(this.dataSource.filterRequest().searchTerm ?? '');
     public readonly selectedState = signal<IssueState>(this.dataSource.filterRequest().state ?? "Open");
+    public readonly selectedProjectIds = signal<string[]>(this.dataSource.filterRequest().projectIds ?? []);
+    public readonly selectedPriorities = signal<IssuePriority[]>(this.dataSource.filterRequest().priorities ?? []);
 
     private readonly searchControlChanges = toSignal(this.searchControl.valueChanges.pipe(debounceTime(250)));
     private readonly filterRequest = computed<IIssueFilterRequest>(() => {
         return {
             searchTerm: this.searchControlChanges() ?? '',
-            state: this.selectedState()
+            state: this.selectedState(),
+            projectIds: this.selectedProjectIds(),
+            priorities: this.selectedPriorities(),
         };
     });
 

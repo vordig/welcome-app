@@ -7,7 +7,10 @@
     @for (project of dataSource.data(); track project.id) {
         <button mat-menu-item (click)="$event.stopPropagation(); onItemClick(project.id)">
             <mat-icon>{{ isSelected(project.id) ? 'check' : '' }}</mat-icon>
-            {{ project.name }}
+            <div class="project">
+                <div class="project__code">{{ project.code }}</div>
+                <div class="project__name">{{ project.name }}</div>
+            </div>
         </button>
     }
 </mat-menu>

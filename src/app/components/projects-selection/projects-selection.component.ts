@@ -1,28 +1,28 @@
-import {Component, signal} from '@angular/core';
+import {Component, output, signal} from '@angular/core';
 import {MatMenuModule} from '@angular/material/menu';
-import {MatButton} from '@angular/material/button';
+import {MatButtonModule} from '@angular/material/button';
 import {ButtonSelectArrowComponent} from '../button-select-arrow/button-select-arrow.component';
 import {ProjectDataSource} from '../../data-sources/project.data-source';
 import {MatIconModule} from '@angular/material/icon';
-import {MatChipsModule} from '@angular/material/chips';
 
 @Component({
     selector: 'app-projects-selection',
     imports: [
         MatMenuModule,
-        MatButton,
-        ButtonSelectArrowComponent,
+        MatButtonModule,
         MatIconModule,
-        MatChipsModule
+        ButtonSelectArrowComponent
     ],
     templateUrl: './projects-selection.component.html',
     styleUrl: './projects-selection.component.scss'
 })
 export class ProjectsSelectionComponent {
 
+    public change = output<string[]>();
+
     public dataSource = new ProjectDataSource();
 
-    public readonly selectedIds = signal<string[]>([]);
+    private readonly selectedIds = signal<string[]>([]);
 
     public isSelected(projectId: string): boolean {
         return this.selectedIds().indexOf(projectId) > -1;
@@ -37,6 +37,7 @@ export class ProjectsSelectionComponent {
                 selectedIds.push(projectId);
             return selectedIds;
         });
+        this.change.emit([...this.selectedIds()]);
     }
 
 }
