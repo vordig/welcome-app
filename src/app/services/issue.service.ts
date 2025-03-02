@@ -1,15 +1,14 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {IIssue} from '../interfaces/issue.interface';
 import {IIssueRequest} from '../interfaces/requests/issue-request.interface';
 import {IPageRequest} from '../interfaces/requests/page-request';
 import {ISortRequest} from '../interfaces/requests/sort-request';
-import {IProjectFilterRequest} from '../interfaces/requests/project/project-filter-request';
 import {IPageResponse} from '../interfaces/responses/page-response';
-import {IProjectResponse} from '../interfaces/responses/project/project-response';
 import {IIssueFilterRequest} from '../interfaces/requests/project/issue-filter-request';
-import {IIssueListResponse} from '../interfaces/responses/project/issue-list-response';
+import {IIssueListResponse} from '../interfaces/responses/issue/issue-list-response.interface';
+import {IIssueDetailResponse} from '../interfaces/responses/issue/issue-detail-response.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -54,6 +53,10 @@ export class IssueService {
         }
 
         return this._http.get<IPageResponse<IIssueListResponse>>(this._apiPath, {params: params});
+    }
+
+    public getIssue(issueId: string): Observable<IIssueDetailResponse> {
+        return this._http.get<IIssueDetailResponse>(`${this._apiPath}/${issueId}`);
     }
 
     public createIssue(projectId: string, request: IIssueRequest): Observable<IIssue> {

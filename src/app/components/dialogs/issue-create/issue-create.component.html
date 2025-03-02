@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>Create issue</h2>
+
+<mat-dialog-content>
+
+    <form [formGroup]="createForm" (ngSubmit)="onCreate()">
+
+        <mat-form-field>
+            <mat-label>Project</mat-label>
+            <mat-select [(ngModel)]="selectedValue" name="food">
+                @for (food of foods; track food) {
+                    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name">
+            @if (name.hasError('required')) {
+                <mat-error>Name is <strong>required</strong></mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description">
+        </mat-form-field>
+
+    </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-flat-button (click)="onCreate()">Create</button>
+</mat-dialog-actions>
