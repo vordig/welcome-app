@@ -7,6 +7,7 @@ import {IssuePriority} from '../../../types/issue.types';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
+import {ProjectDataSource} from '../../../data-sources/project.data-source';
 
 @Component({
   selector: 'app-issue-create',
@@ -25,12 +26,21 @@ export class IssueCreateComponent {
     private readonly _issueService = inject(IssueService);
     private readonly _dialogRef = inject(MatDialogRef<IssueCreateComponent>);
 
+    public projectDataSource = new ProjectDataSource();
+
+    public readonly selectablePriorities: IssuePriority[] = [
+        "Critical",
+        "Major",
+        "Normal",
+        "Minor"
+    ];
+
     public readonly isInvalidState: Signal<boolean> = computed(() => {
         return this.createFormStatusChanges() != 'VALID';
     });
 
     public createForm: FormGroup = new FormGroup({
-        project: new FormControl<string>("", [Validators.required]),
+        projectId: new FormControl<string>("", [Validators.required]),
         name: new FormControl<string>("", [Validators.required]),
         priority: new FormControl<IssuePriority>("Normal", [Validators.required]),
         description: new FormControl<string>(""),
@@ -49,12 +59,11 @@ export class IssueCreateComponent {
     public onCreate() {
         if (this.isInvalidState()) return;
 
-        // this._issueService.createIssue(this.projectId(), this.createForm.value).subscribe({
-        //     next: data => {
-        //         let issueUrl = this._router.createUrlTree([this.projectId()]);
-        //         this._router.navigateByUrl(issueUrl).then(r => {});
-        //     }
-        // });
+        this._issueService.createIssue(this.createForm.value).subscribe({
+            next: data => {
+                this._dialogRef.close(data.id);
+            }
+        });
     }
 
 }

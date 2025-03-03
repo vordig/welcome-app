@@ -9,6 +9,7 @@ import {IPageResponse} from '../interfaces/responses/page-response';
 import {IIssueFilterRequest} from '../interfaces/requests/project/issue-filter-request';
 import {IIssueListResponse} from '../interfaces/responses/issue/issue-list-response.interface';
 import {IIssueDetailResponse} from '../interfaces/responses/issue/issue-detail-response.interface';
+import {ICreateIssueRequest} from '../interfaces/requests/issue/create-issue-request.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -59,8 +60,7 @@ export class IssueService {
         return this._http.get<IIssueDetailResponse>(`${this._apiPath}/${issueId}`);
     }
 
-    public createIssue(projectId: string, request: IIssueRequest): Observable<IIssue> {
-        const headers = new HttpHeaders({'Content-Type': 'application/json'});
-        return this._http.post<IIssue>(`${this._apiPath}/${projectId}`, JSON.stringify(request), {headers: headers});
+    public createIssue(request: ICreateIssueRequest): Observable<IIssueListResponse> {
+        return this._http.post<IIssueListResponse>(this._apiPath, JSON.stringify(request));
     }
 }

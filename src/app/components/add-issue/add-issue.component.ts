@@ -40,11 +40,11 @@ export class AddIssueComponent {
     public onCreate() {
         if (this.isInvalidState()) return;
 
-        this._issueService.createIssue(this.projectId(), this.createForm.value).subscribe({
-            next: data => {
-                let issueUrl = this._router.createUrlTree([this.projectId()]);
-                this._router.navigateByUrl(issueUrl).then(r => {});
-            }
-        });
+        // this._issueService.createIssue(this.projectId(), this.createForm.value).subscribe({
+        //     next: data => {
+        //         let issueUrl = this._router.createUrlTree([this.projectId()]);
+        //         this._router.navigateByUrl(issueUrl).then(r => {});
+        //     }
+        // });
     }
 }

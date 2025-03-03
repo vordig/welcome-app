@@ -1,4 +1,4 @@
-import {Component, computed, effect, signal} from '@angular/core';
+import {Component, computed, effect, inject, signal} from '@angular/core';
 import {IssueDataSource} from '../../data-sources/issue.data-source';
 import {IssueComponent} from '../../components/issue/issue.component';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -17,6 +17,8 @@ import {MatInput, MatInputModule} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
 import {RouterLink} from '@angular/router';
 import {PrioritiesSelectionComponent} from '../../components/priority-selection/priorities-selection.component';
+import {MatDialog} from '@angular/material/dialog';
+import {IssueCreateComponent} from '../../components/dialogs/issue-create/issue-create.component';
 
 @Component({
     selector: 'app-issues',
@@ -39,6 +41,8 @@ import {PrioritiesSelectionComponent} from '../../components/priority-selection/
     styleUrl: './issues.component.scss'
 })
 export class IssuesComponent {
+
+    private readonly _dialog = inject(MatDialog);
 
     public readonly dataSource = new IssueDataSource();
 
@@ -67,5 +71,14 @@ export class IssuesComponent {
     public onStateChanged(change: MatChipListboxChange) {
         if (!change.value) return;
         this.selectedState.set(change.value);
+    }
+
+    public createIssue() {
+        const dialogRef = this._dialog.open(IssueCreateComponent);
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (!result) return;
+            this.dataSource.reload();
+        });
     }
 }
