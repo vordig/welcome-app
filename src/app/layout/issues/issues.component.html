@@ -21,7 +21,9 @@
         </mat-chip-listbox>
 
         <app-projects-selection (change)="selectedProjectIds.set($event)"></app-projects-selection>
-        <app-priorities-selection  (change)="selectedPriorities.set($event)"></app-priorities-selection>
+        <app-priorities-selection (change)="selectedPriorities.set($event)"></app-priorities-selection>
+        <app-issue-sorting [sort]="dataSource.sortRequest()"
+                           (change)="dataSource.changeSort($event)"></app-issue-sorting>
     </div>
 
     <div class="content">

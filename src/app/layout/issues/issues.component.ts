@@ -19,6 +19,7 @@ import {RouterLink} from '@angular/router';
 import {PrioritiesSelectionComponent} from '../../components/priority-selection/priorities-selection.component';
 import {MatDialog} from '@angular/material/dialog';
 import {IssueCreateComponent} from '../../components/dialogs/issue-create/issue-create.component';
+import {IssueSortingComponent} from '../../components/issue-sorting/issue-sorting.component';
 
 @Component({
     selector: 'app-issues',
@@ -35,7 +36,8 @@ import {IssueCreateComponent} from '../../components/dialogs/issue-create/issue-
         MatInputModule,
         MatIcon,
         RouterLink,
-        PrioritiesSelectionComponent
+        PrioritiesSelectionComponent,
+        IssueSortingComponent
     ],
     templateUrl: './issues.component.html',
     styleUrl: './issues.component.scss'

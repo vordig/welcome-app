@@ -12,7 +12,7 @@ export abstract class BaseDataSource<TResponse, TFilterRequest> {
     }
 
     private readonly _defaultSortRequest: ISortRequest = {
-        sortBy: 'modifiedOn',
+        sortBy: 'ModifiedOn',
         sortDir: 'desc',
     }
 
