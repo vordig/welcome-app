@@ -6,6 +6,8 @@ import {LoginComponent} from './layout/auth/login/login.component';
 import {authGuard} from './guards/auth.guard';
 import {IssuesComponent} from './layout/issues/issues.component';
 import {SecuredAreaComponent} from './layout/secured-area/secured-area.component';
+import {AuthComponent} from './layout/auth/auth.component';
+import {SignUpComponent} from './layout/auth/sign-up/sign-up.component';
 
 export const routes: Routes = [
     {
@@ -35,10 +37,15 @@ export const routes: Routes = [
     },
     {
         path: 'auth',
+        component: AuthComponent,
         children: [
             {
                 path: 'sign-in',
                 component: LoginComponent
+            },
+            {
+                path: 'sign-up',
+                component: SignUpComponent
             }
         ]
     }

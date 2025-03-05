@@ -12,7 +12,7 @@ export abstract class BaseDataSource<TResponse, TFilterRequest> {
     }
 
     private readonly _defaultSortRequest: ISortRequest = {
-        sortBy: 'modifiedOn',
+        sortBy: 'ModifiedOn',
         sortDir: 'desc',
     }
 
@@ -56,6 +56,7 @@ export abstract class BaseDataSource<TResponse, TFilterRequest> {
     }
 
     public changeFilter(filterRequest: TFilterRequest) {
+        if (JSON.stringify(this._filterRequest()) === JSON.stringify(filterRequest)) return;
         this._filterRequest.set(filterRequest);
     }
 

@@ -1,0 +1,29 @@
+@mixin _private-apply-font($type-scale) {
+    font-size: var(--mat-sys-#{$type-scale}-size);
+    font-weight: var(--mat-sys-#{$type-scale}-weight);
+    letter-spacing: var(--mat-sys-#{$type-scale}-tracking);
+    line-height: var(--mat-sys-#{$type-scale}-line-height);
+}
+
+:host {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "content brand";
+
+    .brand {
+        @include _private-apply-font(display-medium);
+
+        grid-area: brand;
+        display: grid;
+        place-items: center;
+
+        background-color: var(--mat-sys-primary);
+        color: var(--mat-sys-on-primary);
+    }
+
+    main {
+        grid-area: content;
+        place-self: center;
+    }
+}

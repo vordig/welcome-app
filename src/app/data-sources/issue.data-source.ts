@@ -2,9 +2,9 @@
 import {IssueService} from '../services/issue.service';
 import {rxResource} from '@angular/core/rxjs-interop';
 import {BaseDataSource} from './base.data-source';
-import {IIssueListResponse} from '../interfaces/responses/project/issue-list-response';
 import {IIssueFilterRequest} from '../interfaces/requests/project/issue-filter-request';
 import {IPageResponse} from '../interfaces/responses/page-response';
+import {IIssueListResponse} from '../interfaces/responses/issue/issue-list-response.interface';
 
 export class IssueDataSource extends BaseDataSource<IIssueListResponse, IIssueFilterRequest> {
 
@@ -26,7 +26,10 @@ export class IssueDataSource extends BaseDataSource<IIssueListResponse, IIssueFi
 
     protected override defaultFilterRequest(): IIssueFilterRequest {
         return {
-            state: "Open"
+            searchTerm: '',
+            state: "Open",
+            projectIds: [],
+            priorities: []
         };
     }
 }

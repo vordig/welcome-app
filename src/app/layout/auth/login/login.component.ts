@@ -1,17 +1,18 @@
 import {Component, computed, inject, Signal} from '@angular/core';
-import {Router} from '@angular/router';
+import {RouterLink} from '@angular/router';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {MatButton} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {AuthService} from '../../../services/auth.service';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-login',
     imports: [
         ReactiveFormsModule,
         MatInputModule,
-        MatButton
+        MatButtonModule,
+        RouterLink,
     ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -19,7 +20,6 @@ import {AuthService} from '../../../services/auth.service';
 export class LoginComponent {
 
     private readonly _authService = inject(AuthService);
-    private readonly _router = inject(Router);
 
     public readonly isInvalidState: Signal<boolean> = computed(() => {
         return this.formStatusChanges() != 'VALID';

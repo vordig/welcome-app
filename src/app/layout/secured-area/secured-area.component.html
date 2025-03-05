@@ -1,8 +1,13 @@
 <mat-toolbar>
     <span>CMIssues</span>
     <span class="filler"></span>
-    <span>{{ authService.authData()?.name }}</span>
-    <button mat-button (click)="authService.signOut()">Sign Out</button>
+    <button mat-button [matMenuTriggerFor]="menu">
+        {{ authService.authData()?.name }}
+    </button>
+
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="authService.signOut()">Sign Out</button>
+    </mat-menu>
 </mat-toolbar>
 
 <main>
