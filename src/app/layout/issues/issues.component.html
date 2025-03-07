@@ -1,6 +1,6 @@
 <div class="container">container 1</div>
 
-<div class="resizer">
+<div class="resizer" [class.resizer--left]="isListPaneCollapsed()" [class.resizer--right]="isDetailPaneCollapsed()">
     <div class="resizer__drag-handle" cdkDragLockAxis="x" cdkDrag (cdkDragStarted)="onResizeStarted($event)"
          (cdkDragMoved)="onResizeMove($event)" (cdkDragEnded)="onResizeEnded($event)"></div>
 </div>

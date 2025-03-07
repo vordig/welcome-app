@@ -7,7 +7,11 @@
     grid-column-gap: 8px;
 
     &.enable-animation {
-        transition: grid-template-columns 150ms linear;
+        transition: grid-template-columns 150ms linear, grid-column-gap 150ms linear;
+    }
+
+    &.single-pane {
+        grid-column-gap: 0;
     }
 }
 
@@ -25,23 +29,42 @@
     position: relative;
     place-self: stretch;
     display: grid;
-    grid-template-rows: 1fr [handle-start] 48px [handle-end] 1fr;
+    grid-template-rows: 1fr [handle-start] 40px [handle-end] 1fr;
+
+    &--left {
+        --app-drag-handle-left-offset: 0;
+    }
+
+    &--right {
+        --app-drag-handle-right-offset: 0;
+    }
 
     &__drag-handle {
         --app-drag-handle-width: 4px;
+        --app-drag-handle-color: var(--mat-sys-outline-variant);
 
-        content: '';
         transform: none !important;
         position: absolute;
         grid-row: handle;
+        display: grid;
+        place-items: center;
         inset-block: 0;
-        inset-inline: calc(var(--app-drag-handle-width)/-2);
-        border-radius: calc(var(--app-drag-handle-width)/2);
-        background-color: var(--mat-sys-surface-container);
-        transition: inset 150ms linear, border-radius 150ms linear;
+        inset-inline: var(--app-drag-handle-left-offset, -20px) var(--app-drag-handle-right-offset, -20px);
+        cursor: col-resize;
+        transition: inset 150ms linear;
 
         &:hover, &.cdk-drag-dragging {
             --app-drag-handle-width: 8px;
+            --app-drag-handle-color: var(--mat-sys-outline);
+        }
+
+        &::after {
+            content: '';
+            width: var(--app-drag-handle-width);
+            height: 40px;
+            border-radius: calc(var(--app-drag-handle-width)/2);
+            background-color: var(--app-drag-handle-color);
+            transition: width 150ms linear, border-radius 150ms linear, color 150ms linear;
         }
     }
 }

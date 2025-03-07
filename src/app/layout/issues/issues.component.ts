@@ -52,17 +52,31 @@ export class IssuesComponent implements OnInit, OnDestroy {
         return this.listPanelSize() + 'px';
     }
 
-    @HostBinding('class.enable-animation') get class() {
+    @HostBinding('class.enable-animation') get enableAnimation() {
         return !this.isDragging();
     }
 
+    @HostBinding('class.single-pane') get singlePane() {
+        return this.isListPaneCollapsed() || this.isDetailPaneCollapsed();
+    }
+
     private readonly isDragging = signal<boolean>(false);
+    public readonly isListPaneCollapsed = computed<boolean>(() => this.listPanelSize() === 0);
+    public readonly isDetailPaneCollapsed = computed<boolean>(() => this.listPanelSize() === this.hostSize());
     private readonly listPanelSize = computed<number>(() => {
-        let result = this.panelSize() + this.distance();
-        return Math.min(Math.max(0, result), this.hostSize() - 16);
+        let result = this.adjustedPanelSize() + this.distance();
+        return Math.min(Math.max(0, result), this.hostSize());
     });
     private readonly distance = signal<number>(0);
     private readonly panelSize = signal<number>(412);
+    private readonly adjustedPanelSize = computed<number>(() => {
+        const panelSize = this.panelSize();
+
+        if(panelSize <= 360) return panelSize < 360 / 2 ? 0 : 360;
+        if(panelSize <= 412) return panelSize < 360 + (412 - 360) / 2 ? 360 : 412;
+        if(panelSize <= this.midPoint()) return panelSize < 412 + (this.midPoint() - 412) / 2 ? 412 : this.midPoint();
+        return panelSize < this.midPoint() + (this.hostSize() - this.midPoint()) / 2 ? this.midPoint() : this.hostSize();
+    });
 
     private observer: any;
     private readonly hostSize = signal<number>(0);
@@ -96,13 +110,6 @@ export class IssuesComponent implements OnInit, OnDestroy {
     public onResizeEnded(event: CdkDragEnd) {
         this.isDragging.set(false);
         this.distance.set(0);
-        this.panelSize.update(panelSize => {
-            let updatedPanelSize = panelSize + event.distance.x;
-
-            if(updatedPanelSize <= 360) return updatedPanelSize < 360 / 2 ? 0 : 360;
-            if(updatedPanelSize <= 412) return updatedPanelSize < 360 + (412 - 360) / 2 ? 360 : 412;
-            if(updatedPanelSize <= this.midPoint()) return updatedPanelSize < 412 + (this.midPoint() - 412) / 2 ? 412 : this.midPoint();
-            return updatedPanelSize < this.midPoint() + (this.hostSize() - this.midPoint()) / 2 ? this.midPoint() : this.hostSize();
-        });
+        this.panelSize.set(this.adjustedPanelSize() + event.distance.x);
     }
 }
