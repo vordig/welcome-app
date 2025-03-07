@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, signal} from '@angular/core';
+import {Component, computed, effect, ElementRef, HostBinding, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {IssueDataSource} from '../../data-sources/issue.data-source';
 import {IssueComponent} from '../../components/issue/issue.component';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -20,6 +20,7 @@ import {PrioritiesSelectionComponent} from '../../components/priority-selection/
 import {MatDialog} from '@angular/material/dialog';
 import {IssueCreateComponent} from '../../components/dialogs/issue-create/issue-create.component';
 import {IssueSortingComponent} from '../../components/issue-sorting/issue-sorting.component';
+import {CdkDrag, CdkDragEnd, CdkDragMove, CdkDragStart, DragRef, Point} from '@angular/cdk/drag-drop';
 
 @Component({
     selector: 'app-issues',
@@ -37,50 +38,71 @@ import {IssueSortingComponent} from '../../components/issue-sorting/issue-sortin
         MatIcon,
         RouterLink,
         PrioritiesSelectionComponent,
-        IssueSortingComponent
+        IssueSortingComponent,
+        CdkDrag
     ],
     templateUrl: './issues.component.html',
     styleUrl: './issues.component.scss'
 })
-export class IssuesComponent {
+export class IssuesComponent implements OnInit, OnDestroy {
 
-    private readonly _dialog = inject(MatDialog);
+    private readonly _host = inject(ElementRef);
 
-    public readonly dataSource = new IssueDataSource();
+    @HostBinding('style.--app-list-panel-size') get listPanelSizeVariable() {
+        return this.listPanelSize() + 'px';
+    }
 
-    public readonly searchControl = new FormControl<string>(this.dataSource.filterRequest().searchTerm ?? '');
-    public readonly selectedState = signal<IssueState>(this.dataSource.filterRequest().state ?? "Open");
-    public readonly selectedProjectIds = signal<string[]>(this.dataSource.filterRequest().projectIds ?? []);
-    public readonly selectedPriorities = signal<IssuePriority[]>(this.dataSource.filterRequest().priorities ?? []);
+    @HostBinding('class.enable-animation') get class() {
+        return !this.isDragging();
+    }
 
-    private readonly searchControlChanges = toSignal(this.searchControl.valueChanges.pipe(debounceTime(250)));
-    private readonly filterRequest = computed<IIssueFilterRequest>(() => {
-        return {
-            searchTerm: this.searchControlChanges() ?? '',
-            state: this.selectedState(),
-            projectIds: this.selectedProjectIds(),
-            priorities: this.selectedPriorities(),
-        };
+    private readonly isDragging = signal<boolean>(false);
+    private readonly listPanelSize = computed<number>(() => {
+        let result = this.panelSize() + this.distance();
+        return Math.min(Math.max(0, result), this.hostSize() - 16);
     });
+    private readonly distance = signal<number>(0);
+    private readonly panelSize = signal<number>(412);
+
+    private observer: any;
+    private readonly hostSize = signal<number>(0);
+    private readonly midPoint = computed<number>(() => Math.round(this.hostSize() / 2));
 
     constructor() {
         effect(() => {
-            if (!this.filterRequest()) return;
-            this.dataSource.changeFilter(this.filterRequest()!);
-        });
+            console.log(this.hostSize());
+        })
     }
 
-    public onStateChanged(change: MatChipListboxChange) {
-        if (!change.value) return;
-        this.selectedState.set(change.value);
+    public ngOnInit(): void {
+        this.observer = new ResizeObserver(entries => {
+            this.hostSize.set(entries[0].contentRect.width);
+        })
+        this.observer.observe(this._host.nativeElement);
     }
 
-    public createIssue() {
-        const dialogRef = this._dialog.open(IssueCreateComponent);
+    public ngOnDestroy(): void {
+        this.observer.unobserve(this._host.nativeElement);
+    }
 
-        dialogRef.afterClosed().subscribe(result => {
-            if (!result) return;
-            this.dataSource.reload();
+    public onResizeStarted(event: CdkDragStart) {
+        this.isDragging.set(true);
+    }
+
+    public onResizeMove(event: CdkDragMove) {
+        this.distance.set(event.distance.x);
+    }
+
+    public onResizeEnded(event: CdkDragEnd) {
+        this.isDragging.set(false);
+        this.distance.set(0);
+        this.panelSize.update(panelSize => {
+            let updatedPanelSize = panelSize + event.distance.x;
+
+            if(updatedPanelSize <= 360) return updatedPanelSize < 360 / 2 ? 0 : 360;
+            if(updatedPanelSize <= 412) return updatedPanelSize < 360 + (412 - 360) / 2 ? 360 : 412;
+            if(updatedPanelSize <= this.midPoint()) return updatedPanelSize < 412 + (this.midPoint() - 412) / 2 ? 412 : this.midPoint();
+            return updatedPanelSize < this.midPoint() + (this.hostSize() - this.midPoint()) / 2 ? this.midPoint() : this.hostSize();
         });
     }
 }
